@@ -3,16 +3,6 @@
 import type React from "react";
 
 import { useState } from "react";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { ScrollArea } from "@/components/ui/scroll-area";
 
 type Message = {
   id: number;
@@ -34,11 +24,10 @@ export default function ChatBox() {
       };
       setMessages([...messages, newMessage]);
       setInput("");
-      // Simulate bot response
       setTimeout(() => {
         const botMessage: Message = {
           id: Date.now(),
-          text: "Ren Ai is the best.",
+          text: "Ren AI is the best",
           sender: "bot",
         };
         setMessages((prev) => [...prev, botMessage]);
@@ -48,44 +37,48 @@ export default function ChatBox() {
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100 p-4">
-      <Card className="w-full max-w-md">
-        <CardHeader>
-          <CardTitle>Ren Chat</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <ScrollArea className="h-[50vh] w-full pr-4">
-            {messages.map((message) => (
+      <div className="w-full max-w-md bg-white rounded-lg shadow-md overflow-hidden">
+        <div className="bg-blue-500 text-white p-4">
+          <h2 className="text-xl font-bold">RenChat</h2>
+        </div>
+        <div className="h-[50vh] overflow-y-auto p-4 space-y-4">
+          {messages.map((message) => (
+            <div
+              key={message.id}
+              className={`flex ${
+                message.sender === "user" ? "justify-end" : "justify-start"
+              }`}
+            >
               <div
-                key={message.id}
-                className={`mb-4 ${
-                  message.sender === "user" ? "text-right" : "text-left"
+                className={`max-w-[70%] p-3 rounded-lg ${
+                  message.sender === "user"
+                    ? "bg-blue-500 text-white"
+                    : "bg-gray-200 text-gray-800"
                 }`}
               >
-                <span
-                  className={`inline-block p-2 rounded-lg ${
-                    message.sender === "user"
-                      ? "bg-blue-500 text-white"
-                      : "bg-gray-200 text-gray-800"
-                  }`}
-                >
-                  {message.text}
-                </span>
+                {message.text}
               </div>
-            ))}
-          </ScrollArea>
-        </CardContent>
-        <CardFooter>
-          <form onSubmit={handleSubmit} className="flex w-full space-x-2">
-            <Input
+            </div>
+          ))}
+        </div>
+        <div className="p-4 border-t">
+          <form onSubmit={handleSubmit} className="flex space-x-2">
+            <input
+              type="text"
               value={input}
               onChange={(e) => setInput(e.target.value)}
               placeholder="Type your message..."
-              className="flex-grow"
+              className="flex-grow p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
-            <Button type="submit">Send</Button>
+            <button
+              type="submit"
+              className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+            >
+              Send
+            </button>
           </form>
-        </CardFooter>
-      </Card>
+        </div>
+      </div>
     </div>
   );
 }
